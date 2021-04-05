@@ -6,11 +6,9 @@ const Home = () => {
   const [data, setData] = useState([]);
   const url = "http://localhost:3001/main/products";
   useEffect(() => {
-    const aboutCont = new AbortController();
     try {
       axios.get(url).then((response) => {
         setData(response.data.post);
-        return () => aboutCont.abort();
       })
     } catch (error) {
       console.log(error);
@@ -28,6 +26,7 @@ const Home = () => {
               backgroundPosition: "center",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
+              height:"600px"
             }}
           >
             <div className="container">
@@ -61,6 +60,7 @@ const Home = () => {
               backgroundPosition: "center",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
+              height:"600px"
             }}
           >
             <div className="container">
@@ -94,15 +94,17 @@ const Home = () => {
               backgroundPosition: "center",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
+              height:"600px"
             }}
           >
             <div className="container">
               <div className="slider-content left-holder">
                 <h2 className="animated fadeInDown">
                   Building a Succesfull Business
+                  <br />
+                  We will help to improve
                 </h2>
                 <div className="row">
-                  We will help to improve
                   <div className="col-md-6 col-sm-12 col-12">
                     <p className="animated fadeInDown">
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit,

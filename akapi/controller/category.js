@@ -21,7 +21,7 @@ exports.addCategorybyId = (req, res, next) => {
 
 exports.getCategory = (req, res, next) => {
     const id = req.query.id;
-    const sql = `SELECT     id,product, productimage FROM products WHERE cid = ${id}`;
+    const sql = `SELECT     id,product,productimage,priceone FROM products WHERE cid = ${id}`;
     con.query(sql, (err, row) => {
         if (err) throw err;
         res.status(200).json({

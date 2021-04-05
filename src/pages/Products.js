@@ -22,7 +22,7 @@ export default function Products() {
     return (
         <div>
             <div className="page-title-section"
-                style={{ backgroundImage: "url(" + "assets/img/bg/pagetitle.jpg" + ")" }}>
+                style={{ backgroundImage: "url(" + "../assets/img/bg/pagetitle.jpg" + ")" }}>
                 <div className="container">
                     <h1>HR Sheet Catalogue</h1>
                     <ul>
@@ -107,122 +107,51 @@ export default function Products() {
 
                         <div className="col-md-9">
                             <div className="row">
-                                {product && product.map((item,index) => {
-                                    return (
-                                        <div className="col-md-4 col-sm-6 col-12">
-                                            <div className="classNameic-shop">
-                                                <div className="classNameic-shop-img">
-                                                    <img src="../assets/img/shop/grid/pro-1.jpg" alt="img" />
-                                                    <div className="shop-box-overlay">
-                                                        <div className="row">
-                                                            <div className="col-md-6 col-sm-6 col-12 pr-0">
-                                                                <Link to={`/productDetail/${item.id}`}>
-                                                                    <div className="shop-to-card">
-                                                                        <h4><span className="fa fa-eye"></span>Details</h4>
-                                                                    </div>
-                                                                </Link>
-                                                            </div>
-                                                            <div className="col-md-6 col-sm-6 col-12 pl-0">
-                                                                <a href="cart.php">
-                                                                    <div className="shop-buy">
-                                                                        <h4><span className="fa fa-cart-plus"></span>To Cart</h4>
-                                                                    </div>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="classNameic-shop-text">
-                                                    <h4><a href="product-detail.php" key={index}  >{item.product}</a></h4>
-                                                    <p>HR SHEET- PRIME</p>
-                                                    <h5>₹10000.00</h5>
-                                                    <ul className="shop-grid-rating">
-                                                        <li><i className="fa fa-star"></i></li>
-                                                        <li><i className="fa fa-star"></i></li>
-                                                        <li><i className="fa fa-star"></i></li>
-                                                        <li><i className="fa fa-star"></i></li>
-                                                        <li><i className="fa fa-star-half-empty"></i></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )
-                                })}
-
-                                {/* <div className="col-md-4 col-sm-6 col-12">
-                                    <div className="classNameic-shop">
-                                        <div className="classNameic-shop-img">
-                                            <img src="../assets/img/shop/grid/pro-1.jpg" alt="img" />
-                                            <div className="shop-box-overlay">
-                                                <div className="row">
-                                                    <div className="col-md-6 col-sm-6 col-12 pr-0">
-                                                        <a href="product-detail.php">
-                                                            <div className="shop-to-card">
-                                                                <h4><span className="fa fa-eye"></span>Details</h4>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <div className="col-md-6 col-sm-6 col-12 pl-0">
-                                                        <a href="cart.php">
-                                                            <div className="shop-buy">
-                                                                <h4><span className="fa fa-cart-plus"></span>To Cart</h4>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="classNameic-shop-text">
-                                            <h4><a href="product-detail.php">HR SHEET</a></h4>
-                                            <p>HR SHEET- PRIME</p>
-                                            <h5>₹10000.00</h5>
-                                            <ul className="shop-grid-rating">
-                                                <li><i className="fa fa-star"></i></li>
-                                                <li><i className="fa fa-star"></i></li>
-                                                <li><i className="fa fa-star"></i></li>
-                                                <li><i className="fa fa-star"></i></li>
-                                                <li><i className="fa fa-star-half-empty"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div> */}
-                                {/* <div className="col-md-4 col-sm-6 col-12">
-                                    <div className="classNameic-shop">
-                                        <div className="classNameic-shop-img">
-                                            <img src="../assets/img/shop/grid/pro-1.jpg" alt="img" />
-                                            <div className="shop-box-overlay">
-                                                <div className="row">
-                                                    <div className="col-md-6 col-sm-6 col-12 pr-0">
-                                                        <a href="product-detail.php">
-                                                            <div className="shop-to-card">
-                                                                <h4><span className="fa fa-eye"></span>Details</h4>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                    <div className="col-md-6 col-sm-6 col-12 pl-0">
-                                                        <a href="cart.php">
-                                                            <div className="shop-buy">
-                                                                <h4><span className="fa fa-cart-plus"></span>To Cart</h4>
-                                                            </div>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="classNameic-shop-text">
-                                            <h4><a href="product-detail.php">HR SHEET</a></h4>
-                                            <p>HR SHEET- PRIME</p>
-                                            <h5>₹10000.00</h5>
-                                            <ul className="shop-grid-rating">
-                                                <li><i className="fa fa-star"></i></li>
-                                                <li><i className="fa fa-star"></i></li>
-                                                <li><i className="fa fa-star"></i></li>
-                                                <li><i className="fa fa-star"></i></li>
-                                                <li><i className="fa fa-star-half-empty"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div> */}
+                                {product && product.map((item,index)=>(
+  <div class="col-md-4 col-sm-6 col-12">
+  <div class="classic-shop">
+      <div class="classic-shop-img">
+          <img src="../assets/img/shop/grid/pro-1.jpg" alt="img" />
+          <div class="shop-box-overlay">
+              <div class="row">
+                  <div class="col-md-6 col-sm-6 col-12 pr-0">
+                  <Link to={`/productDetail/${item.id}`}>
+                          <div class="shop-to-card">
+                              <h4><span class="fa fa-eye"></span>Details</h4>
+                          </div>
+                      </Link>
+                  </div>
+                  <div class="col-md-6 col-sm-6 col-12 pl-0">
+                      <a href="cart.php">
+                          <div class="shop-buy">
+                              <h4><span class="fa fa-cart-plus"></span>To Cart</h4>
+                          </div>
+                      </a>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="classic-shop-text">
+          <h4>
+              
+          <Link to={`/productDetail/${item.id}`}>
+              {item.product}
+              </Link>
+          <p>HR SHEET- PRIME</p>
+          </h4>
+          <h5>${item.priceone}</h5>
+          <ul class="shop-grid-rating">
+              <li><i class="fa fa-star"></i></li>
+              <li><i class="fa fa-star"></i></li>
+              <li><i class="fa fa-star"></i></li>
+              <li><i class="fa fa-star"></i></li>
+              <li><i class="fa fa-star-half-empty"></i></li>
+          </ul>
+      </div>
+  </div>
+</div>
+                                ))}
+                              
                             </div>
                         </div>
                     </div>

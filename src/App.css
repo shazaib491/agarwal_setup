@@ -39,3 +39,10 @@
 
 .section-block-bg{
 }
+
+
+@media only screen and (max-width: 600px) {
+  .swiper-slide {
+    height: 0px;
+  }
+}
