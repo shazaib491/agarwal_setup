@@ -2,12 +2,14 @@ import { useState, useContext, useEffect } from "react";
 import axios from 'axios';
 import AuthContext from "../Context/AuthContext";
 import { useHistory } from 'react-router';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from "react-router-dom";
 toast.configure()
 
 const Login = () => {
-  const history=useHistory();
+  const history = useHistory();
   const [email, setEmail] = useState();
   const [password, setpassword] = useState();
   const { getLoggedIn } = useContext(AuthContext)
@@ -18,16 +20,15 @@ const Login = () => {
         email,
         password,
       }
-      await axios.post("http://localhost:3001/auth/login", loginData,
-        { withCredentials: true })
-      await getLoggedIn();
-      
-      toast.success('Welcome User', { position: toast.POSITION.BOTTOM_RIGHT })
-
-      history.push("/dashboard");
+      axios.post("http://localhost:3001/auth/login", loginData,
+        { withCredentials: true }).then(() => {
+          getLoggedIn();
+          toast.success('Welcome User Please Select Goodown', { position: toast.POSITION.BOTTOM_RIGHT })
+          history.push("/productcatalog");
+        })
     } catch (error) {
       toast.error('Wrong Credentials', { position: toast.POSITION.BOTTOM_RIGHT })
-      
+
       console.log(error);
     }
   }
@@ -72,7 +73,8 @@ const Login = () => {
                         <div className="col-md-12">
                           <input
                             type="email"
-                            onChange={(e) => setEmail(e.target.value)} placeholder="Enter email" name="email" value={email}
+                            placeholder="Enter email" name="email" value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                           />
                         </div>
                         <div className="col-md-12">
@@ -81,9 +83,9 @@ const Login = () => {
                             type="password"
                             className="form-control"
                             name="password"
-                            onChange={(e) => setpassword(e.target.value)}
                             placeholder="*******"
                             className="form-control" value={password}
+                            onChange={(e) => setpassword(e.target.value)}
                           />
                           <span
                             toggle="#password-field"
@@ -93,13 +95,13 @@ const Login = () => {
 
                         <div className="col-md-6 mb-30">
                           <div className="center-holder">
-                            <button type="submit">Submit </button>
+                            <button type="submit" defaultValue="submit" >Submit </button>
                           </div>
                         </div>
                         <div className="col-md-12">
                           <p>
                             Don't have an account?
-                            <a href="registration.php"> Register Here</a>
+                            <Link to="/register">Register Here</Link>
                           </p>
                         </div>
                         <div className="col-md-12">

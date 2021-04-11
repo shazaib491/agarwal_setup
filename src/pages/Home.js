@@ -13,7 +13,7 @@ const Home = () => {
     } catch (error) {
       console.log(error);
     }
-  },[]);
+  }, []);
 
   return (
     <div>
@@ -26,7 +26,7 @@ const Home = () => {
               backgroundPosition: "center",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
-              height:"600px"
+              height: "600px"
             }}
           >
             <div className="container">
@@ -46,9 +46,9 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="animated fadeInUp mt-30">
-                  <a href="#contact" className="dark-button button-md">
+                  <Link to={"/contact"} className="dark-button button-md">
                     Contact us
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -60,7 +60,7 @@ const Home = () => {
               backgroundPosition: "center",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
-              height:"600px"
+              height: "600px"
             }}
           >
             <div className="container">
@@ -80,9 +80,9 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="animated fadeInUp mt-25">
-                  <a href="#contact" className="dark-button button-md">
+                  <Link to={"/contact"} className="dark-button button-md">
                     Contact us
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -94,7 +94,7 @@ const Home = () => {
               backgroundPosition: "center",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
-              height:"600px"
+              height: "600px"
             }}
           >
             <div className="container">
@@ -115,9 +115,9 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="animated fadeInUp mt-30">
-                  <a href="#contact" className="dark-button button-md">
+                  <Link to={"/contact"} className="dark-button button-md">
                     Contact us
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -127,7 +127,11 @@ const Home = () => {
         <div className="swiper-button-prev"></div>
         <div className="swiper-pagination"></div>
       </div>
-      <div className="section-block-bg pb-4">
+      <div className="section-block-bg pb-4"
+        style={{
+          backgroundImage: "url(" + "assets/img/bg/bg13.jpg" + ")",
+        }}
+      >
         <div className="container">
           <div className="section-heading center-holder">
             <h2>Product Catalogue</h2>
@@ -153,7 +157,6 @@ const Home = () => {
                           <div className="row">
                             <div className="col-md-12 col-sm-12 col-12 pr-0">
                               <Link to={`/product/${item.id}`}>
-                                {/* <a href="products.php"> */}
                                 <div className="shop-to-card">
                                   <h4>
                                     <span className="fa fa-eye"></span>View
@@ -177,9 +180,9 @@ const Home = () => {
             </div>
           </div>
           <div className="center-holder">
-            <a href="product" className="primary-button button-md mt-10">
+            <Link to="/productcatalog" className="primary-button button-md mt-10">
               View All
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -238,7 +241,7 @@ const Home = () => {
       <div
         className="section-block-bg"
         style={{
-          backgroundImage: "url(" + "assets/img/bg/bg1.png" + ")",
+          backgroundImage: "url(" + "assets/img/bg/bg1.jpg" + ")",
         }}
       >
         <div className="container">
@@ -273,7 +276,7 @@ const Home = () => {
       <div
         className="section-block-bg"
         style={{
-          backgroundImage: "url(" + "assets/img/bg/bg6.png" + ")",
+          backgroundImage: "url(" + "assets/img/bg/bg6.jpg" + ")",
         }}
         id="testmonials"
       >

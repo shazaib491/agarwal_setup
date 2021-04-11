@@ -6,35 +6,24 @@ const con = require("../database/db");
 exports.register = async (req, res, next) => {
     try {
         const {
-            fname,
-            lname,
-            desgination,
-            department,
-            company_nm,
-            streetHouse,
-            address_I,
-            address_II,
-            country,
-            state,
-            city,
-            pincode,
-            shipping_address,
-            shipping_street_no,
-            shipping_address_I,
-            shipping_address_II,
-            shipping_country,
-            shipping_state,
-            shipping_city,
-            phone_no,
-            mobile_no,
-            fax_number,
+            name,
             email,
-            alternate_email,
-            preferred_username,
+            mobile,
             password,
             cpassword,
+            firmname,
+            products,
+            state,
+            city,
+            area,
+            pincode,
+            address,
+            gid,
+            gstno,
             gst,
+            pancardno,
             pancard,
+            profileimage,
         } = req.body;
         if (!email && !password && !cpassword) {
             return res.status(400).json({
@@ -53,7 +42,7 @@ exports.register = async (req, res, next) => {
         }
         const salt = 10;
         const hash = await bcrypt.hash(password, salt);
-        const existingUser = `SELECT * FROM Customers_I WHERE email='${email}'`;
+        const existingUser = `SELECT * FROM customers WHERE email='${email}'`;
         con.query(existingUser, (err, row) => {
             const numRows = row.length;
             if (numRows > 0) {
@@ -62,67 +51,13 @@ exports.register = async (req, res, next) => {
                 });
             } else {
                 console.log(pincode);
-                const insert = `INSERT INTO Customers_I(
-            fname,
-            lname,
-            designation,
-            department,
-            company_nm,
-            streetHouse,
-            address_I,
-            address_II,
-            country,
-            state,
-            city,
-            shipping_address,
-            shipping_street_no,
-            shipping_address_I,
-            shipping_address_II,
-            shipping_country,
-            shipping_state,
-            shipping_city,
-            phone_no,
-            mobile_no,
-            fax_number,
-            email, 
-            alternate_email, 
-            preferred_username,
-            password,
-            gst,
-            pancard
-                )VALUES
-                (   '${fname}',
-                    '${lname}',
-                    '${desgination}',
-                    '${department}',
-                    '${company_nm}',
-                    '${streetHouse}',
-                    '${address_I}',
-                    '${address_II}',
-                    '${country}',
-                    '${state}',
-                    '${city}',
-                    '${shipping_address}',
-                    '${shipping_street_no}',
-                    '${shipping_address_I}',
-                    '${shipping_address_II}',
-                    '${shipping_country}',
-                    '${shipping_state}',
-                    '${shipping_city}',
-                    '${phone_no}',
-                    '${mobile_no}',
-                    '${fax_number}',
-                    '${email}',
-                    '${alternate_email}',
-                    '${preferred_username}',
-                    '${hash}',
-                    '${gst}',
-                    '${pancard}'
-                    )`;
+
+                const insert = `INSERT INTO customers(name,email,mobile,password,firmname,products,state, city,area,pincode,address,gid,gstno,gst,pancardno)
+                VALUES('${name}','${email}','${mobile}','${hash}','${firmname}','${products}','${state}','${city}','${area}','${pincode}','${address}','${gid}','${gstno}','${gst}','${pancardno}')`;
                 con.query(insert, (err, result) => {
                     if (err) throw err;
                     con.query(
-                        `SELECT * FROM Customers_I WHERE id='${result.insertId}'`,
+                        `SELECT * FROM customers WHERE id='${result.insertId}'`,
                         (err, row) => {
                             row.forEach((element) => {
                                 const token = jwt.sign(
@@ -155,7 +90,7 @@ exports.login = async (req, res, next) => {
             errorMessage: "Please enter all required fields",
         });
     }
-    const existingUser = `SELECT * FROM Customers_I WHERE email='${email}'`;
+    const existingUser = `SELECT * FROM customers WHERE email='${email}'`;
     con.query(existingUser, (err, row) => {
         const numRows = row.length;
         if (numRows === 0) {

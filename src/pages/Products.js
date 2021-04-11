@@ -1,24 +1,98 @@
-import React, { useState, useEffect } from 'react'
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useContext } from 'react'
+import { Link, useHistory } from "react-router-dom";
 import { useParams } from "react-router";
 import axios from "axios";
+import AuthContext from "../Context/AuthContext";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+toast.configure()
 
 export default function Products() {
+
+    const { loggedIn } = useContext(AuthContext)
+    const history = useHistory();
+    
     let { id } = useParams();
     const [product, setProduct] = useState([]);
+    const [category, setCategory] = useState([]);
+    const [godown, setGodown] = useState([]);
     const url = `http://localhost:3001/category/product?id=${id}`;
-    useEffect(async () => {
+    const disabled = false;
+    useEffect(() => {
         const aboutCont = new AbortController();
         try {
-            const result = await fetch(url);
-            const data = await result.json();
-            setProduct(data.post);
-            console.log(data.post);
+            if (!loggedIn) {
+                toast.error('Please FullFill All Credentials', { position: toast.POSITION.BOTTOM_RIGHT })
+                history.push("/login");
+            }
+            axios.get(url).then((response) => {
+                setProduct(response.data.post);
+                setCategory(response.data.category)
+                setGodown(response.data.godown)
+
+            })
         } catch (error) {
             console.log(error);
         }
         return () => aboutCont.abort();
     }, [url]);
+
+    const onSelectGodown = async (e) => {
+
+        let id = e.target.value;
+        let categories = new Array();
+        let stock;
+        let stockData;
+        let finalArray = new Array();
+        try {
+            stock = await axios.get(`http://localhost:3001/category/getStock?id=${id}`);
+            stockData = stock.data.stock;
+            const category = await axios.get(`http://localhost:3001/category/getCategoryByStock`);
+            categories = category.data.category;
+            categories.forEach((category, index) => {
+                stockData.forEach((stock) => {
+                    if (category.id === stock.cid) {
+                        finalArray.push(category);
+
+                    }
+                })
+            })
+            let jsonObject = finalArray.map(JSON.stringify);
+            let uniqueSet = new Set(jsonObject);
+            let uniqueArray = Array.from(uniqueSet).map(JSON.parse);
+            setCategory([...uniqueArray])
+            let allProducts = new Array();
+            const products = await axios.get(`http://localhost:3001/category/getProductByStock`);
+            allProducts = products.data.products;
+            let finalProduct = new Array();
+            allProducts.forEach((productsss) => {
+                stockData.forEach((stock) => {
+                    if (productsss.cid === stock.cid) {
+                        finalProduct.push(productsss);
+                    }
+                })
+            })
+            let jsonObjects = finalProduct.map(JSON.stringify);
+            let uniqueSets = new Set(jsonObjects);
+            let uniqueArrays = Array.from(uniqueSets).map(JSON.parse);
+            setProduct([...uniqueArrays]);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    let [checked, isChecked] = useState(true);
+    const onCategory = async (e, cid) => {
+        isChecked(!checked);
+        if(checked){
+            let allProducts=new Array();
+            const products = await axios.get(`http://localhost:3001/category/getCategoryByProduct?id=${cid}`);
+            allProducts=products.data.product;
+            setProduct([...allProducts])
+        }else{
+            console.log("not checkwd");
+        }
+    }
+
     return (
         <div>
             <div className="page-title-section"
@@ -44,58 +118,20 @@ export default function Products() {
                                     </header>
                                     <div className="filter-content collapse show" id="collapse_1" >
                                         <div className="card-body">
-                                            <form className="pb-3">
-                                                <div className="input-group">
-                                                    <input type="text" className="form-control" placeholder="Search" />
-                                                    <div className="input-group-append">
-                                                        <button className="btn btn-light" type="button"><i className="fa fa-search"></i></button>
-                                                    </div>
-                                                </div>
-                                            </form>
                                             <div className="filter-content collapse show" id="collapse_1">
                                                 <div className="card-body">
-                                                    <label className="custom-control custom-checkbox">
-                                                        <input type="checkbox" className="custom-control-input" />
-                                                        <div className="custom-control-label">HR SHEET
-                                    <b className="badge badge-pill badge-light float-right">12</b>
-                                                        </div>
-                                                    </label>
-                                                    <label className="custom-control custom-checkbox">
-                                                        <input type="checkbox" className="custom-control-input" />
-                                                        <div className="custom-control-label">HR SHEET
-                                    <b className="badge badge-pill badge-light float-right">12</b>
-                                                        </div>
-                                                    </label>
-                                                    <label className="custom-control custom-checkbox">
-                                                        <input type="checkbox" className="custom-control-input" />
-                                                        <div className="custom-control-label">HR SHEET
-                                    <b className="badge badge-pill badge-light float-right">12</b>
-                                                        </div>
-                                                    </label>
-                                                    <label className="custom-control custom-checkbox">
-                                                        <input type="checkbox" className="custom-control-input" />
-                                                        <div className="custom-control-label">HR SHEET
-                                    <b className="badge badge-pill badge-light float-right">12</b>
-                                                        </div>
-                                                    </label>
-                                                    <label className="custom-control custom-checkbox">
-                                                        <input type="checkbox" className="custom-control-input" />
-                                                        <div className="custom-control-label">HR SHEET
-                                    <b className="badge badge-pill badge-light float-right">12</b>
-                                                        </div>
-                                                    </label>
-                                                    <label className="custom-control custom-checkbox">
-                                                        <input type="checkbox" className="custom-control-input" />
-                                                        <div className="custom-control-label">HR SHEET
-                                    <b className="badge badge-pill badge-light float-right">12</b>
-                                                        </div>
-                                                    </label>
-                                                    <label className="custom-control custom-checkbox">
-                                                        <input type="checkbox" className="custom-control-input" />
-                                                        <div className="custom-control-label">HR SHEET
-                                    <b className="badge badge-pill badge-light float-right">12</b>
-                                                        </div>
-                                                    </label>
+                                                    {
+                                                        category && category.map((item, index) => (
+                                                            <label  className="custom-control custom-checkbox" key={index}>
+                                                                <input type="checkbox"
+                                                                    
+                                                                    onChange={(e) => onCategory(e, item.id)} className="custom-control-input" />
+                                                                <div className="custom-control-label" key={index} >{item.category}
+                                                                    <b className="badge badge-pill badge-light float-right" key={index}> {index + 1}</b>
+                                                                </div>
+                                                            </label>
+                                                        ))
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
@@ -107,51 +143,63 @@ export default function Products() {
 
                         <div className="col-md-9">
                             <div className="row">
-                                {product && product.map((item,index)=>(
-  <div class="col-md-4 col-sm-6 col-12">
-  <div class="classic-shop">
-      <div class="classic-shop-img">
-          <img src="../assets/img/shop/grid/pro-1.jpg" alt="img" />
-          <div class="shop-box-overlay">
-              <div class="row">
-                  <div class="col-md-6 col-sm-6 col-12 pr-0">
-                  <Link to={`/productDetail/${item.id}`}>
-                          <div class="shop-to-card">
-                              <h4><span class="fa fa-eye"></span>Details</h4>
-                          </div>
-                      </Link>
-                  </div>
-                  <div class="col-md-6 col-sm-6 col-12 pl-0">
-                      <a href="cart.php">
-                          <div class="shop-buy">
-                              <h4><span class="fa fa-cart-plus"></span>To Cart</h4>
-                          </div>
-                      </a>
-                  </div>
-              </div>
-          </div>
-      </div>
-      <div class="classic-shop-text">
-          <h4>
-              
-          <Link to={`/productDetail/${item.id}`}>
-              {item.product}
-              </Link>
-          <p>HR SHEET- PRIME</p>
-          </h4>
-          <h5>${item.priceone}</h5>
-          <ul class="shop-grid-rating">
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star"></i></li>
-              <li><i class="fa fa-star-half-empty"></i></li>
-          </ul>
-      </div>
-  </div>
-</div>
+                                <div class="col-md-12 col-sm-12 col-12">
+                                    <div class="pull-right">
+                                        <select name="godown" className="form-control" onChange={(e) => onSelectGodown(e, godown)} >
+                                            <option isOptionDisabled={disabled}  >--SELECT GODOWN--</option>
+                                            {godown && godown.map((item, index) => (
+
+                                                <option value={item.id}>{item.godown}</option>
+                                            ))}
+
+
+
+                                        </select>
+                                    </div>
+                                </div>
+                                {product && product.map((item, index) => (
+                                    <div class="col-md-4 col-sm-6 col-12">
+                                        <div class="classic-shop">
+                                            <div class="classic-shop-img">
+                                                <img src="../assets/img/shop/grid/pro-1.jpg" alt="img" />
+                                                <div class="shop-box-overlay">
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-12 pr-0">
+                                                            <Link to={`/productDetail/${item.id}`}>
+                                                                <div class="shop-to-card">
+                                                                    <h4><span class="fa fa-eye"></span>Details</h4>
+                                                                </div>
+                                                            </Link>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-6 col-12 pl-0">
+                                                            <a href="cart.php">
+                                                                <div class="shop-buy">
+                                                                    <h4><span class="fa fa-cart-plus"></span>To Cart</h4>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="classic-shop-text">
+                                                <h4>
+
+                                                    <Link to={`/productDetail/${item.id}`}>
+                                                        {item.product}
+                                                    </Link>
+                                                    <p><span>Grade</span>&emsp;HR SHEET- PRIME</p>
+                                                </h4>
+                                                <h5>${item.priceone}</h5>
+                                                <ul class="">
+                                                    <li className="d-flex justify-content-around"><span className="f-25">Grade</span><span>{item.grade}</span></li>
+                                                    <li className="d-flex justify-content-around"><span className="f-25">Length</span><span>{item.length}</span></li>
+                                                    
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
                                 ))}
-                              
+
                             </div>
                         </div>
                     </div>

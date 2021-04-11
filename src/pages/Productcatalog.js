@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { Link, useHistory } from "react-router-dom";
+
 
 const Productcatalog = () => {
+
   const [data, setData] = useState([]);
   const url = "http://localhost:3001/main/products";
 

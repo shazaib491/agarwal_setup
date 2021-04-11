@@ -1,4 +1,38 @@
+import axios from "axios";
+import { useState } from "react";
+import { toast } from 'react-toastify';
+
+
+
 const Footer = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
+  const [message, setMessage] = useState('');
+
+  const getQuery = async (e) => {
+    e.preventDefault();
+    try {
+      const enquiriesdetail = {
+        name: name,
+        mobile: mobile,
+        email: email,
+        message: message
+      }
+       axios.post("http://localhost:3001/enquiry", enquiriesdetail).then(()=>{
+         toast.success('We Will Contact You Soon', { position: toast.POSITION.BOTTOM_LEFT })
+         setName('')
+         setEmail('')
+         setMobile('')
+         setMessage('')
+       })
+      
+
+      } catch (error) {
+
+    }
+
+  }
   return (
     <div>
       <footer>
@@ -140,46 +174,49 @@ const Footer = () => {
                   </a>
                 </h3>
                 <form
+                  onSubmit={getQuery}
                   id="stickyelements-forms"
-                  action=""
-                  method="post"
-                  autocomplete="off"
                 >
                   <input
                     className=" required"
                     type="text"
                     id="contact-form-name"
                     name="contact-form-name"
-                    value=""
+                    value={name}
                     placeholder="Name"
                     required
-                    autocomplete="off"
+                    autoComplete="off"
+                    onChange={(e) => setName(e.target.value)}
                   />
                   <input
                     className=" required"
                     type="tel"
                     id="contact-form-phone"
                     name="contact-form-phone"
-                    value=""
+                    value={mobile}
                     placeholder="Phone"
                     required
-                    autocomplete="off"
+                    autoComplete="off"
+                    onChange={(e) => setMobile(e.target.value)}
                   />
                   <input
                     className="email  required"
                     type="email"
                     id="contact-form-email"
                     name="contact-form-email"
-                    value=""
+                    value={email}
                     placeholder="Email"
                     required
-                    autocomplete="off"
+                    autoComplete="off"
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                   <textarea
                     className=""
                     id="contact-form-message"
                     name="contact-form-message"
                     placeholder="Message"
+                    onChange={(e) => setMessage(e.target.value)}
+                    value={message}
                   ></textarea>
                   <input
                     id="stickyelements-submit-form"

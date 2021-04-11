@@ -1,19 +1,31 @@
 import axios from "axios";
 import { useState } from "react";
+import { toast } from 'react-toastify';
 
 const Contact = () => {
 
-  const [name, setName] = useState();
-  const [email, setemail] = useState();
-  const [message, setmessage] = useState();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
+  const [message, setMessage] = useState('');
+
   const enquiry = async (e) => {
     e.preventDefault();
     try {
-      const query = {
-        name, email, message
+      const enquiriesdetail = {
+        name: name,
+        mobile: mobile,
+        email: email,
+        message: message
       }
-      const serverRes = await axios.post("http://localhost:3001/enquiry", query)
-      console.log(serverRes.data);
+      axios.post("http://localhost:3001/enquiry", enquiriesdetail).then(() => {
+        toast.success('We Will Contact You Soon', { position: toast.POSITION.BOTTOM_LEFT })
+        setName('')
+        setEmail('')
+        setMobile('')
+        setMessage('')
+      })
+
     } catch (error) {
       console.log(error);
     }
@@ -52,25 +64,27 @@ const Contact = () => {
               <div className="contact-form-box mt-30">
                 <form className="contact-form" onSubmit={enquiry} >
                   <div className="row">
-                    {/* <div className="col-md-12">
-                      {" "}
-                      <input
-                        type="text"
-                        name="username"
-                        placeholder="Username"
-                      />{" "}
-                    </div> */}
+                  
                     <div className="col-md-6 col-sm-6 col-12">
                       {" "}
-                      <input type="text" name="name" onChange={(e) => setName(e.target.value)} placeholder="Name" />{" "}
+                      <input type="text" name="name" onChange={(e) => setName(e.target.value)} placeholder="Name"
+                        value={name}
+                      />{" "}
                     </div>
                     <div className="col-md-6 col-sm-6 col-12">
                       {" "}
                       <input
                         type="email"
                         name="email"
-                        onChange={(e) => setemail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value)}
                         placeholder="E-mail"
+                        value={email}
+                      />{" "}
+                    </div>
+                    <div className="col-md-12 col-sm-12 col-12">
+                      {" "}
+                      <input type="text" name="name" onChange={(e) => setMobile(e.target.value)} placeholder="Mobile"
+                        value={mobile}
                       />{" "}
                     </div>
                     <div className="col-md-12">
@@ -78,14 +92,15 @@ const Contact = () => {
                       <textarea
                         name="message"
                         placeholder="Message"
-                        onChange={(e) => setmessage(e.target.value)}
+                        onChange={(e) => setMessage(e.target.value)}
+                        value={message}
                       ></textarea>{" "}
                     </div>
                     <div className="col-md-12 mb-30">
                       <div className="center-holder">
                         {" "}
-                        <input  type="submit" value="Send Message" />
-                          {" "}
+                        <input type="submit" value="Send Message" />
+                        {" "}
                       </div>
                     </div>
                   </div>

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { React, useEffect,useState } from 'react'
+import { React, useEffect, useState } from 'react'
 import Logout from './Logout';
 
 export default function Dashboard() {
@@ -49,57 +49,33 @@ export default function Dashboard() {
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <label for="">First Name</label>
-                                                <input type="text" name="fname" placeholder="First Name" value={data && (data.fname)} />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="">Last Name</label>
-                                                <input type="text" name="lname" placeholder="Last Name" value={data &&(data.lname)} />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="">Designation</label>
-
-                                                <input type="text" name="Designation" placeholder="Designation" value={data &&(data.designation)} />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="">Department</label>
-                                                <input type="text" name="Department" placeholder="Designation" value={data &&(data.department)} />
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label for="">Company Name</label>
-                                                <input type="text" name="Company Name" placeholder="Company Name" value={data &&(data.company_nm)} />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="">Phone Number</label>
-                                                <input type="number" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==11) return false;" name="mobile" placeholder="Phone Number" value={data &&(data.phone_no)} />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="">Mobile Number</label>
-                                                <input type="number" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==10) return false;" name="Pincode" placeholder="Mobile Number" value={data &&(data.mobile_no)} />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="">Fax Number</label>
-                                                <input type="text" name="Fax Number" placeholder="Fax Number" value={data &&(data.fax_number)} />
+                                                <label for="">Username</label>
+                                                <input type="text" name="fname" placeholder="Name" value={data && (data.name)} />
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="">Email</label>
-                                                <input type="text" name="Email" placeholder="Email" value={data &&(data.email)} />
+                                                <input type="text" name="lname" placeholder="Last Name" value={data && (data.email)} />
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="">Alternate Email</label>
-                                                <input type="email" name="Alternate Email" placeholder="Alternate Email" value={data &&(data.alternate_email)} />
+                                                <label for="">Mobile</label>
+
+                                                <input type="text" name="mobile" placeholder="mobile" value={data && (data.mobile)} />
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="">Preferred Username</label>
-                                                <input type="text" name="Preferred Username" placeholder="Preferred Username" value={data &&(data.preferred_username)} />
+                                            
+                                            <div class="col-md-12">
+                                                <label for="">FirmName</label>
+                                                <input type="text" name="Company Name" placeholder="Company Name" value={data && (data.firmname)} />
                                             </div>
+                                          
+                                       
+                                    
                                             <div class="col-md-6">
                                                 <label for="">GST Number</label>
                                                 <input type="text" name="GST Number" placeholder="GST Number" value={data && data.gst} />
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="">Permanent Account Number (PAN)</label>
-                                                <input type="text" name="PAN" placeholder="Permanent Account Number (PAN)" value={data && data.pancard} />
+                                                <input type="text" name="PAN" placeholder="Permanent Account Number (PAN)" value={data && data.pancardno} />
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="">GST Certificate</label>
@@ -129,32 +105,25 @@ export default function Dashboard() {
                                             <h3 class="page-subheading text-center pb-20">MY ADDRESS</h3>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-12">
-                                                <label for="">Street/House No</label>
-                                                <input type="text" name="Street/House No" placeholder="Street/House No" value={data.streetHouse} />
-                                            </div>
+                                          
                                             <div class="col-md-6">
-                                                <label for="">Address Line 1</label>
-                                                <input type="text" name="Address Line 1" placeholder="Address Line 1" value={data.address_I} />
+                                                <label for="">Address</label>
+                                                <input type="text" name="Address Line 1" placeholder="Address Line 1" value={data.address} />
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="">Address Line 2</label>
-                                                <input type="text" name="Address Line 2" placeholder="Address Line 2" value={data.address_II} />
-                                            </div>
+                                          
                                             <div class="col-md-6">
                                                 <label for="">Country</label>
-                                                <select>
-                                                
+                                                <select className="form-control mt-3 ">
+
                                                     <option value={data.country} selected>{data.country}</option>
                                                     <option value="AK">India</option>
                                                     <option value="AZ">Shrilanka</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-6 ">
                                                 <label for="">State</label>
-                                                <select>
-                                                <option value={data.state} selected>{data.state}</option>
-
+                                                <select className="form-control mt-3 " >
+                                                    <option value={data.state} selected>{data.state}</option>
                                                     <option value="AL">Select State</option>
                                                     <option value="AK">MP</option>
                                                     <option value="AZ">UP</option>
@@ -162,79 +131,20 @@ export default function Dashboard() {
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="">City</label>
-                                                <select>
-                                                <option value={data.city} selected>{data.city}</option>
+                                                <select className="form-control mt-3 ">
+                                                    <option value={data.city} selected>{data.city}</option>
 
                                                     <option value="AL">Select City</option>
                                                     <option value="AK">Bhopal</option>
                                                     <option value="AZ">Sagar</option>
                                                 </select>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-10">
                                                 <label for="">Pincode</label>
                                                 <input type="number" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==6) return false;" name="Pincode" placeholder="Pincode" value="23423423" />
                                             </div>
-                                            <div class="col-md-12">
-                                                <div class="form-check shipping">
-                                                    <labal>Is Shipping Address same as Billing ?</labal>
-                                                    <label class="redio_s">Yes
-							  <input type="radio" checked="checked" name="radio" value={data.shipping_address} />
-                                                        <span class="checkmark"></span>
-                                                    </label>
-                                                    <label class="redio_s">No
-							  <input type="radio" name="radio" value={data.shipping_address} />
-                                                        <span class="checkmark"></span>
-                                                    </label>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label for="">Shipping Street/House No</label>
-                                                <input type="text" name="Street/House No" placeholder="Shipping Street/House No" value={data.shipping_street_no} />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="">Shipping Address Line 1</label>
-                                                <input type="text" name="Address Line 1" placeholder="Shipping Address Line 1"  value={data.shipping_address_I}/>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="">Shipping Address Line 2</label>
-                                                <input type="text" name="Address Line 2" placeholder="Shipping Address Line 2" value={data.shipping_address_II} />
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="">Shipping Country</label>
-                                                <select>
-                                                <option value={data.shipping_country} selected>{data.shipping_country}</option>
-
-                                                    <option value="AL">Select Shipping Country</option>
-                                                    <option value="AK">India</option>
-                                                    <option value="AZ">Shrilanka</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="">Shipping State</label>
-                                                <select>
-                                                <option value={data.shipping_state} selected>{data.shipping_state}</option>
-
-                                                    <option value="AL">Select Shipping State</option>
-                                                    <option value="AK">MP</option>
-                                                    <option value="AZ">UP</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="">Shipping City</label>
-                                                <select>
-                                                <option value={data.shipping_city} selected>{data.shipping_city}</option>
-
-                                                    <option value="AL">Select Shipping City</option>
-                                                    <option value="AK">Bhopal</option>
-                                                    <option value="AZ">Sagar</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="">Shipping Pincode</label>
-                                                <input type="number" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==6) return false;" name="Pincode" placeholder="Shipping Pincode" value="423423" />
-                                            </div>
-                                            <div class="col-md-3 mb-30">
+                                          
+                                            <div class="col-md-3 mb-30 mx-auto d-block">
                                                 <div class="center-holder"> <button type="submit">Update </button> </div>
                                             </div>
                                         </div>

@@ -1,5 +1,6 @@
 const con = require("./../database/db");
 exports.products = (req, res, next) => {
+  
   const data = con.query(`SELECT * FROM category`, (err, row) => {
     if (err) throw err;
     res.status(200).json({
