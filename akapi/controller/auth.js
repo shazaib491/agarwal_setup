@@ -5,26 +5,9 @@ const con = require("../database/db");
 
 exports.register = async (req, res, next) => {
     try {
-        const {
-            name,
-            email,
-            mobile,
-            password,
-            cpassword,
-            firmname,
-            products,
-            state,
-            city,
-            area,
-            pincode,
-            address,
-            gid,
-            gstno,
-            gst,
-            pancardno,
-            pancard,
-            profileimage,
-        } = req.body;
+        const url = req.protocol + "://" + req.get("host");
+        const imagePath = url + "/images/" + req.file.filename;
+        const { name, email, mobile, password, cpassword, firmname, products, state, city, area, pincode, address, gid, gstno, gst, pancardno } = req.body;
         if (!email && !password && !cpassword) {
             return res.status(400).json({
                 errorMessage: "Please enter all required fields",
@@ -51,9 +34,10 @@ exports.register = async (req, res, next) => {
                 });
             } else {
                 console.log(pincode);
-
-                const insert = `INSERT INTO customers(name,email,mobile,password,firmname,products,state, city,area,pincode,address,gid,gstno,gst,pancardno)
-                VALUES('${name}','${email}','${mobile}','${hash}','${firmname}','${products}','${state}','${city}','${area}','${pincode}','${address}','${gid}','${gstno}','${gst}','${pancardno}')`;
+                var today = new Date();
+                var dates = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                const insert = `INSERT INTO customers(name,email,mobile,password,firmname,products,state, city,area,pincode,address,gid,gstno,gst,pancardno,date,profileimage)
+                VALUES('${name}','${email}','${mobile}','${hash}','${firmname}','${products}','${state}','${city}','${area}','${pincode}','${address}','${gid}','${gstno}','${gst}','${pancardno}','${dates}','${imagePath}')`;
                 con.query(insert, (err, result) => {
                     if (err) throw err;
                     con.query(
@@ -134,7 +118,6 @@ exports.loggedIn = async (req, res, next) => {
 
 exports.logout = async (req, res, next) => {
     try {
-        console.log("hello");
         res
             .cookie("token", "", {
                 httpOnly: true,
@@ -145,3 +128,6 @@ exports.logout = async (req, res, next) => {
         res.status(500).send();
     }
 };
+
+
+
