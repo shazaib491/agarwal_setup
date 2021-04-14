@@ -6,31 +6,82 @@ import { useHistory } from 'react-router';
 import { toast } from 'react-toastify';
 
 export default function Bucket() {
-    const { loggedIn } = useContext(AuthContext);
-    const history = useHistory();
+    const { loggedIn,getLoggedIn } = useContext(AuthContext);
     
-
-    useEffect(() => {
-        if (loggedIn === false) {
-          toast.error("Please FullFill All Credentials", {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          });
-          history.push("/login");
-        }
-      }, []);
-
-
+    const history = useHistory();
     const [bucket, setBucket] = useState([]);
+    let [sum, setSum] = useState(0);
+    let [sprice, setSprice] = useState(85);
+    let [tax, setTax] = useState(30);
+    let [total, setTotal] = useState(0);
+    useEffect(() => {
+
+        if (loggedIn === false) {
+            toast.error("Please FullFill All Credentials", {
+                position: toast.POSITION.BOTTOM_RIGHT,
+            });
+            history.push("/login");
+        }
+
+    }, []);
+
+
+
     useEffect(() => {
         try {
             axios.get(`http://localhost:3001/main/cart_bucket`).then((data) => {
                 setBucket([...data.data.bucket])
-                
+                getLoggedIn();
+
             })
         } catch (error) {
             console.log(error);
         }
     }, [])
+
+    useEffect(() => {
+        setTotal(sum + tax + sprice)
+    }, [sum])
+
+    const deleteTocart = (id) => {
+        try {
+            console.log(id);
+            axios.delete(`http://localhost:3001/main/deleteCart?id=${id}`).then((data) => {
+                const datas = bucket.filter(cart => cart.pid !== id)
+                setBucket([...datas])
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    let sums = 0;
+    let totalAmt = (qty, pid) => {
+        var newData = bucket.map(el => {
+            if (el.pid === pid)
+                return Object.assign(el, { producttotal: el.price * qty })
+            return el;
+        });
+        sums = newData.reduce((accumulator, current) => accumulator + current.producttotal, 0);
+        setSum(sums);
+        setBucket([...newData])
+    }
+
+    const orderNow = () => {
+        let data = {
+            ptotal: sum,
+            sprice: sprice,
+            tax: tax,
+            total: total
+        }
+
+        axios.post(`http://localhost:3001/main/orders`, data).then((data) => {
+            console.log(data);
+            history.push("/checkOut");
+        }).catch(e => {
+            console.log(e);
+        })
+    }
 
 
     return (
@@ -55,7 +106,13 @@ export default function Bucket() {
                             <div class="shop-cart-box">
                                 <div class="row bx" id="1">
                                     {bucket && bucket.map((buck, index) => (
-                                       <BucketProduct buck={buck} />
+                                        <BucketProduct data={
+                                            {
+                                                buck: buck,
+                                                deleteTocart: deleteTocart,
+                                                totalAmt: totalAmt
+                                            }
+                                        } />
                                     ))}
 
 
@@ -68,22 +125,25 @@ export default function Bucket() {
                                 <ul class="right-info-price">
                                     <li>
                                         Total Price:
-                     <h6>₹10000.00</h6>
+                     <h6>₹{sum}</h6>
                                     </li>
                                     <li>
                                         Shipping Price:
-                     <h6>₹85.00</h6>
+                     <h6>₹{sprice}.00</h6>
                                     </li>
                                     <li>
                                         Tax:
-                     <h6>₹30.00</h6>
+                     <h6>₹{tax}.00</h6>
                                     </li>
                                 </ul>
                                 <div class="total-price">
-                                    <p>Total: <strong>₹10150.00</strong></p>
+
+                                    <p>Total: <strong>₹{total}</strong></p>
                                 </div>
                             </div>
-                            <div class="mt-25 right-holder"> <a href="#" class="primary-button button-md">Order Now</a> </div>
+                            <div class="mt-25 right-holder">
+                                <button onClick={orderNow} class="primary-button button-md">Order Now</button>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -5,15 +5,16 @@ import axios from "axios";
 const Home = () => {
   const [data, setData] = useState([]);
   const url = "http://localhost:3001/main/products";
+
   useEffect(() => {
     try {
       axios.get(url).then((response) => {
         setData(response.data.post);
-      })
+      });
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [data]);
 
   return (
     <div>
@@ -26,7 +27,7 @@ const Home = () => {
               backgroundPosition: "center",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
-              height: "600px"
+              height: "600px",
             }}
           >
             <div className="container">
@@ -60,7 +61,7 @@ const Home = () => {
               backgroundPosition: "center",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
-              height: "600px"
+              height: "600px",
             }}
           >
             <div className="container">
@@ -94,7 +95,7 @@ const Home = () => {
               backgroundPosition: "center",
               backgroundSize: "cover",
               backgroundRepeat: "no-repeat",
-              height: "600px"
+              height: "600px",
             }}
           >
             <div className="container">
@@ -127,7 +128,8 @@ const Home = () => {
         <div className="swiper-button-prev"></div>
         <div className="swiper-pagination"></div>
       </div>
-      <div className="section-block-bg pb-4"
+      <div
+        className="section-block-bg pb-4"
         style={{
           backgroundImage: "url(" + "assets/img/bg/bg13.jpg" + ")",
         }}
@@ -147,40 +149,44 @@ const Home = () => {
               className="owl-carousel owl-theme mt-25"
               id="services-carousel-2"
             >
-              {data && data.map((item, index) => {
-                return (
-                  <div className="d-inline-block ">
-                    <div className="classic-shop">
-                      <div className="classic-shop-img">
-                        <img src="assets/img/shop/grid/pro-1.jpg" alt="img" />
-                        <div className="shop-box-overlay">
-                          <div className="row">
-                            <div className="col-md-12 col-sm-12 col-12 pr-0">
-                              <Link to={`/product/${item.id}`}>
-                                <div className="shop-to-card">
-                                  <h4>
-                                    <span className="fa fa-eye"></span>View
-                                  Catalogue
-                                </h4>
-                                </div>
-                              </ Link>
+              {data &&
+                data.map((item, index) => 
+                  
+                    <div className="d-inline-block ">
+                      <div className="classic-shop">
+                        <div className="classic-shop-img">
+                          <img src="assets/img/shop/grid/pro-1.jpg" alt="img" />
+                          <div className="shop-box-overlay">
+                            <div className="row">
+                              <div className="col-md-12 col-sm-12 col-12 pr-0">
+                                <Link to={`/product/${item.id}`}>
+                                  <div className="shop-to-card">
+                                    <h4>
+                                      <span className="fa fa-eye"></span>View
+                                      Catalogue
+                                    </h4>
+                                  </div>
+                                </Link>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                      <div className="classic-shop-text">
-                        <h5>
-                          <a key={index}>{item.category}</a>
-                        </h5>
+                        <div className="classic-shop-text">
+                          <h5>
+                            <a key={index}>{item.category}</a>
+                          </h5>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  
+                )}
             </div>
           </div>
           <div className="center-holder">
-            <Link to="/productcatalog" className="primary-button button-md mt-10">
+            <Link
+              to="/productcatalog"
+              className="primary-button button-md mt-10"
+            >
               View All
             </Link>
           </div>
