@@ -6,8 +6,8 @@ const { products, addproducts, cart_bucket, carts, deleteCarts, orders, shippind
 // get cards
 router.post('/products', addproducts);
 router.get("/products", products);
-router.post("/addTocart", cart_bucket);
-router.get("/cart_bucket", carts)
+router.post("/addTocart",auth, cart_bucket);
+router.get("/cart_bucket",auth, carts)
 router.delete("/deleteCart", deleteCarts)
 router.post("/orders", auth, orders)
 router.get("/shipping", auth, shippindDetail);

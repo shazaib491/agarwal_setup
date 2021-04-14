@@ -6,8 +6,8 @@ import { useHistory } from 'react-router';
 import { toast } from 'react-toastify';
 
 export default function Bucket() {
-    const { loggedIn,getLoggedIn } = useContext(AuthContext);
-    
+    const { loggedIn, getLoggedIn } = useContext(AuthContext);
+
     const history = useHistory();
     const [bucket, setBucket] = useState([]);
     let [sum, setSum] = useState(0);
@@ -31,6 +31,7 @@ export default function Bucket() {
         try {
             axios.get(`http://localhost:3001/main/cart_bucket`).then((data) => {
                 setBucket([...data.data.bucket])
+
                 getLoggedIn();
 
             })
@@ -42,7 +43,6 @@ export default function Bucket() {
     useEffect(() => {
         setTotal(sum + tax + sprice)
     }, [sum])
-
     const deleteTocart = (id) => {
         try {
             console.log(id);
@@ -72,7 +72,8 @@ export default function Bucket() {
             ptotal: sum,
             sprice: sprice,
             tax: tax,
-            total: total
+            total: total,
+            orderid: bucket[0].orderid
         }
 
         axios.post(`http://localhost:3001/main/orders`, data).then((data) => {
@@ -105,15 +106,22 @@ export default function Bucket() {
                         <div class="col-md-8 col-sm-8 col-12">
                             <div class="shop-cart-box">
                                 <div class="row bx" id="1">
-                                    {bucket && bucket.map((buck, index) => (
-                                        <BucketProduct data={
-                                            {
-                                                buck: buck,
-                                                deleteTocart: deleteTocart,
-                                                totalAmt: totalAmt
-                                            }
-                                        } />
-                                    ))}
+
+                                    {(bucket.length > 0) ? (
+                                        bucket.map((buck, index) => (
+                                            <BucketProduct data={
+                                                {
+                                                    buck: buck,
+                                                    deleteTocart: deleteTocart,
+                                                    totalAmt: totalAmt
+                                                }
+                                            } />
+                                        ))
+                                    ) : (
+                                        <div className="col-md-6 m-auto text-center">
+                                            <h4 className="text-center">Your Cart Bukcet is Empty</h4>
+                                        </div>
+                                    )}
 
 
                                 </div>

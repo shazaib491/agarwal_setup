@@ -33,9 +33,15 @@ const CheckOut = () => {
             console.log(e);
         })
         axios.get(`http://localhost:3001/main/expenses`).then((bill) => {
-            console.log(bill);
+            console.log(bill.data.expreses[0]);
+            setBill(bill.data.expreses[0]);
         })
     }, [])
+
+
+    let confirmation = () => {
+        history.push("/confirm");
+    }
     return (
         <>
             <div className="page-title-section"
@@ -107,22 +113,22 @@ const CheckOut = () => {
                                 <ul className="right-info-price">
                                     <li>
                                         Total Price:
-                           <h6>₹10000.00</h6>
+                           <h6>₹{bill && bill.ptotal}</h6>
                                     </li>
                                     <li>
                                         Shipping Price:
-                           <h6>₹85.00</h6>
+                           <h6>₹{bill && bill.sprice}</h6>
                                     </li>
                                     <li>
                                         Tax:
-                           <h6>₹30.00</h6>
+                           <h6>₹{bill && bill.tax}</h6>
                                     </li>
                                 </ul>
                                 <div className="total-price">
-                                    <p>Total: <strong>₹10115.00</strong></p>
+                                    <p>Total: <strong>₹{bill && bill.total}</strong></p>
                                 </div>
                             </div>
-                            <div className="mt-25 right-holder"> <a href="confirmation.php" className="primary-button button-md">Proceed</a> </div>
+                            <div className="mt-25 right-holder"> <button onClick={() => { confirmation() }} className="primary-button button-md">Proceed</button> </div>
                         </div>
                     </div>
                 </div>

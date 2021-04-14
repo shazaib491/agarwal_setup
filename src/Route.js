@@ -6,6 +6,7 @@ import AuthContext from './Context/AuthContext';
 import About from './pages/About';
 import Bucket from './pages/Bucket';
 import CheckOut from './pages/CheckOut';
+import Confirmed from './pages/Confirmed';
 import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
@@ -35,6 +36,7 @@ export default function Routers() {
                     <Route path="/contact" component={Contact} />
                     <Route path="/bucket" component={Bucket} />
                     <Route path="/checkOut" component={CheckOut} />
+                    <Route path="/confirm" component={Confirmed} />
                     {
                         loggedIn === true && (<>
                             <Route path="/dashboard" component={Dashboard} />

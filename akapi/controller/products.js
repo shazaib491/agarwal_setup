@@ -45,7 +45,9 @@ exports.addproducts = async (req, res, next) => {
 exports.cart_bucket = async (req, res, next) => {
   const existingCart = `SELECT * FROM cart_bucket WHERE pid='${req.body.id}'`;
   con.query(existingCart, (err, count) => {
-
+    // var radnowAr = 'AR';
+    // var no = Math.floor((Math.random() * 10000000000) + 1);
+    let orderno = "AR4398305585" + req.user;
     let addTocart = req.body.cart;
     const cart = {
       pid: req.body.id,
@@ -55,7 +57,8 @@ exports.cart_bucket = async (req, res, next) => {
       producttotal: req.body.priceone * 1
     }
     if (addTocart) {
-      const sql = `INSERT INTO cart_bucket (pid,pname,price,quantity,producttotal) VALUES('${cart.pid}','${cart.pname}','${cart.price}','${cart.quantity}','${cart.producttotal}')`;
+      // AR4398305585
+      const sql = `INSERT INTO cart_bucket (orderid,pid,pname,price,quantity,producttotal) VALUES('${orderno}','${cart.pid}','${cart.pname}','${cart.price}','${cart.quantity}','${cart.producttotal}')`;
       con.query(sql, (err, cart) => {
         if (err) throw err;
         res.status(201).json({
@@ -79,7 +82,7 @@ exports.cart_bucket = async (req, res, next) => {
 
 exports.carts = async (req, res, next) => {
   try {
-    const sql = `SELECT  DISTINCT pid,pname,price,quantity,producttotal FROM cart_bucket `;
+    const sql = `SELECT  DISTINCT pid,pname,price,quantity,producttotal,orderid FROM cart_bucket `;
     con.query(sql, (err, bukcet) => {
       if (err) throw err;
       res.status(200).json({
@@ -113,10 +116,9 @@ exports.deleteCarts = async (req, res, next) => {
 
 exports.orders = async (req, res, next) => {
   const id = req.user;
-  const { ptotal, sprice, tax, total } = req.body;
-  var radnowAr = 'AR';
-  var no = Math.floor((Math.random() * 10000000000) + 1);
-  let orderno = radnowAr + no;
+  const { ptotal, sprice, tax, total,orderid } = req.body;
+  
+  let orderno = orderid;
   var today = new Date();
   var dates = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 
@@ -170,7 +172,7 @@ exports.shippindDetail = async (req, res, next) => {
 
 exports.totalExpenses = async (req, res, next) => {
   const id = req.user;
-  const sql = `SELECT * FROM orders WHERE custid='${id}' ORDER BY id DESC LIMIT 1 ` ;
+  const sql = `SELECT * FROM orders WHERE custid='${id}' ORDER BY id DESC LIMIT 1 `;
   con.query(sql, (err, totalExpenses) => {
     if (err) throw err;
     res.status(200).json({

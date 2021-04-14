@@ -259,9 +259,9 @@ const Home = () => {
                   <strong>Doing the right thing</strong>
                 </h2>
                 <h4>At the Right Time.</h4>
-                <a href="#" className="primary-button button-md mt-10">
+                <Link to="/login" className="primary-button button-md mt-10">
                   Become a Client
-                </a>
+                </Link>
               </div>
             </div>
             <div className="col-md-6">
