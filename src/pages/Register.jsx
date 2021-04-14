@@ -33,9 +33,8 @@ const Register = () => {
   const [gstno, setGstno] = useState();
   const [gst, setGst] = useState();
   const [pancardno, setPancardno] = useState();
-  // const [pancard, setPancard] = useState();
   const [profileimage, setProfileimage] = useState();
-  console.log(profileimage);
+  const [godown, setGodown] = useState([]);
   const history = useHistory();
 
   const registered = async (e) => {
@@ -141,7 +140,6 @@ const Register = () => {
     const getPincode = async () => {
       try {
         const pincodeData = await axios.get(pincode_url);
-        console.log(pincodeData.data.pincode[0].pincode);
         setPincode(pincodeData.data.pincode[0].pincode);
       } catch (error) {}
     };
@@ -156,6 +154,16 @@ const Register = () => {
     }
     setProfileimage(e.target.files[0]);
   };
+  useEffect(() => {
+    axios
+      .get(`http://localhost:3001/auth/gowdown`)
+      .then((response) => {
+        setGodown([...response.data.godown]);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  }, []);
 
   return (
     <div>
@@ -366,29 +374,23 @@ const Register = () => {
                         value={gstno}
                       />
                     </div>
+
                     <div className="col-md-6">
-                      <input
-                        type="text"
-                        name="PAN"
-                        placeholder="gid no"
+                      <select
+                        className="form-control"
                         onChange={(e) => setGid(e.target.value)}
                         value={gid}
-                      />
+                      >
+                        <option>Select godown</option>
+                        {godown &&
+                          godown.map((godowns, index) => (
+                            <option key={index} value={godowns.id}>
+                              {godowns.godown}
+                            </option>
+                          ))}
+                      </select>
                     </div>
-                    {/* <div className="col-md-6">
-                      <div className="custom-file mt-2">
-                        <input
-                          type="file"
-                          className="custom-file-input"
-                          id="customFile"
-                          name="filename"
-                          onChange={gst}
-                        />
-                        <label htmlFor=""className="custom-file-label" for="customFile">
-                          Upload GST Certificate
-                        </label>
-                      </div>
-                    </div> */}
+
                     <div className="col-md-3 m-auto">
                       <img
                         className=""

@@ -2,7 +2,8 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const con = require("../database/db");
-
+const util = require('util');
+const query = util.promisify(con.query).bind(con);
 exports.register = async (req, res, next) => {
     try {
         const url = req.protocol + "://" + req.get("host");
@@ -104,6 +105,21 @@ exports.login = async (req, res, next) => {
         }
     });
 };
+
+exports.gowdown = async (req, res, next) => {
+    try {
+        const rows = await query(`SELECT * FROM godown`);
+        res.status(200).json({
+            message: 'gowdown fetched',
+            godown: rows
+        })
+    } catch (error) {
+        res.status(400).json({
+            message: 'somthing is wrong '
+        })
+    }
+}
+
 
 exports.loggedIn = async (req, res, next) => {
     try {

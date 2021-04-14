@@ -1,4 +1,9 @@
 const con = require("./../database/db");
+const util = require('util');
+const query = util.promisify(con.query).bind(con);
+
+
+
 exports.products = (req, res, next) => {
 
   const data = con.query(`SELECT * FROM category`, (err, row) => {
@@ -43,10 +48,8 @@ exports.addproducts = async (req, res, next) => {
 };
 
 exports.cart_bucket = async (req, res, next) => {
-  const existingCart = `SELECT * FROM cart_bucket WHERE pid='${req.body.id}'`;
-  con.query(existingCart, (err, count) => {
-    // var radnowAr = 'AR';
-    // var no = Math.floor((Math.random() * 10000000000) + 1);
+
+  try {
     let orderno = "AR4398305585" + req.user;
     let addTocart = req.body.cart;
     const cart = {
@@ -56,16 +59,22 @@ exports.cart_bucket = async (req, res, next) => {
       quantity: 1,
       producttotal: req.body.priceone * 1
     }
+    const rows = await query(`SELECT * FROM cart_bucket WHERE pid=${req.body.id} && custid=${req.user}`);
     if (addTocart) {
-      // AR4398305585
-      const sql = `INSERT INTO cart_bucket (orderid,pid,pname,price,quantity,producttotal) VALUES('${orderno}','${cart.pid}','${cart.pname}','${cart.price}','${cart.quantity}','${cart.producttotal}')`;
-      con.query(sql, (err, cart) => {
-        if (err) throw err;
+      if (rows.length > 0) {
         res.status(201).json({
-          message: "product is added to cart",
-          cart: cart
+          message: "product is already added to cart"
         })
-      })
+      } else {
+        const insert = await query(`INSERT INTO cart_bucket (orderid,pid,pname,price,quantity,producttotal,custid) VALUES('${orderno}','${cart.pid}','${cart.pname}','${cart.price}','${cart.quantity}','${cart.producttotal}','${req.user}')`);
+        let result = Object(JSON.parse(JSON.stringify(insert)));
+        console.log(result.affectedRows);
+        if (result.affectedRows) {
+          res.status(201).json({
+            message: "product is added to cart"
+          })
+        }
+      }
     } else {
       const sql = `DELETE FROM cart_bucket WHERE pid=${cart.pid}`;
       con.query(sql, (err, cart) => {
@@ -76,13 +85,16 @@ exports.cart_bucket = async (req, res, next) => {
       })
 
     }
-  })
+  } catch (error) {
+    console.log(error);
+  }
+
 }
 
 
 exports.carts = async (req, res, next) => {
   try {
-    const sql = `SELECT  DISTINCT pid,pname,price,quantity,producttotal,orderid FROM cart_bucket `;
+    const sql = `SELECT  DISTINCT pid,pname,price,quantity,producttotal,orderid FROM cart_bucket  WHERE custid=${req.user}`;
     con.query(sql, (err, bukcet) => {
       if (err) throw err;
       res.status(200).json({
@@ -116,8 +128,8 @@ exports.deleteCarts = async (req, res, next) => {
 
 exports.orders = async (req, res, next) => {
   const id = req.user;
-  const { ptotal, sprice, tax, total,orderid } = req.body;
-  
+  const { ptotal, sprice, tax, total, orderid } = req.body;
+
   let orderno = orderid;
   var today = new Date();
   var dates = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
