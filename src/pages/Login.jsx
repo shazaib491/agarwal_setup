@@ -13,24 +13,25 @@ const Login = () => {
   const [email, setEmail] = useState();
   const [password, setpassword] = useState();
   const { getLoggedIn } = useContext(AuthContext)
-  const login = async (e) => {
-    try {
+  const login =  (e) => {
+    
       e.preventDefault();
       const loginData = {
         email,
         password,
       }
+      
       axios.post("http://localhost:3001/auth/login", loginData,
-        { withCredentials: true }).then(() => {
+        { withCredentials: true }).then((res) => {
           getLoggedIn();
           toast.success('Welcome User Please Select Goodown', { position: toast.POSITION.BOTTOM_RIGHT })
           history.push("/productcatalog");
+        }).catch((e)=>{
+          console.log(e.response.status)
+          toast.error('Wrong Credentials', { position: toast.POSITION.BOTTOM_RIGHT })
         })
-    } catch (error) {
-      toast.error('Wrong Credentials', { position: toast.POSITION.BOTTOM_RIGHT })
 
-      console.log(error);
-    }
+      
   }
 
   return (
